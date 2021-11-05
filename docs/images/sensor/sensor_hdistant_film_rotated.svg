@@ -7,7 +7,7 @@
    viewBox="0 0 116.37908 70.729341"
    version="1.1"
    id="svg5"
-   inkscape:version="1.1 (c4e8f9e, 2021-05-24)"
+   inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
    sodipodi:docname="sensor_hdistant_film_rotated.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -27,11 +27,11 @@
      fit-margin-left="5"
      fit-margin-right="5"
      fit-margin-bottom="5"
-     inkscape:zoom="1.3416246"
-     inkscape:cx="231.06315"
-     inkscape:cy="149.44568"
-     inkscape:window-width="1680"
-     inkscape:window-height="997"
+     inkscape:zoom="2"
+     inkscape:cx="160"
+     inkscape:cy="148.25"
+     inkscape:window-width="2560"
+     inkscape:window-height="1387"
      inkscape:window-x="0"
      inkscape:window-y="25"
      inkscape:window-maximized="1"
@@ -39,6 +39,48 @@
      units="px" />
   <defs
      id="defs2">
+    <marker
+       style="overflow:visible;"
+       id="marker4738"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.4) rotate(180) translate(10,0)"
+         style="fill-rule:evenodd;fill:context-stroke;stroke:context-stroke;stroke-width:1.0pt;"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path4736" />
+    </marker>
+    <marker
+       style="overflow:visible;"
+       id="Arrow1Lend"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;fill:context-stroke;stroke:context-stroke;stroke-width:1.0pt;"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path4462" />
+    </marker>
+    <marker
+       style="overflow:visible;"
+       id="marker4720"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.4) rotate(180) translate(10,0)"
+         style="fill-rule:evenodd;fill:context-stroke;stroke:context-stroke;stroke-width:1.0pt;"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path4468" />
+    </marker>
     <marker
        style="overflow:visible"
        id="marker20935"
@@ -307,7 +349,7 @@
          d="M 118.25304,177.93736 V 161.76124"
          id="path2011" />
       <path
-         style="fill:#ffcc00;fill-opacity:1;stroke:#ffcc00;stroke-width:0.360871;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+         style="fill:#ffcc00;fill-opacity:1;stroke:#ffcc00;stroke-width:0.3609846;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker4738)"
          d="M 118.25304,177.93736 V 161.76124"
          id="path7645" />
       <ellipse
@@ -324,6 +366,18 @@
          cy="161.32799"
          rx="0.36087093"
          ry="0.45464057" />
+      <circle
+         style="fill:#ff6600;fill-opacity:1;stroke:#ff6600;stroke-width:0.360871;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="path14890-4"
+         cx="118.26532"
+         cy="177.80037"
+         r="0.45464057" />
+      <circle
+         style="fill:#ff6600;fill-opacity:1;stroke:#ff6600;stroke-width:0.360871;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="path14890-5-7"
+         cx="118.26532"
+         cy="161.34773"
+         r="0.45464057" />
       <g
          id="g14748">
         <g

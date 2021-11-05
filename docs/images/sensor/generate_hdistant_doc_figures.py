@@ -1,3 +1,6 @@
+import os
+import subprocess
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -96,64 +99,116 @@ def scene_dict(sensor_to_world=None):
         },
     }
 
+def make_film_plots():
+    """
+    Create the film plots.
+    """
+    for name, sensor_to_world in {
+            "default":
+            ScalarTransform4f.look_at(
+                origin=[0, 0, 0],
+                target=[0, 0, 1],
+                up=[0, 1, 0],
+            ),
+            "rotated":
+            ScalarTransform4f.look_at(
+                origin=[0, 0, 0],
+                target=[0, 0, 1],
+                up=[1, 1, 0],
+            ),
+    }.items():
+        scene = load_dict(scene_dict(sensor_to_world=sensor_to_world))
+        sensor = scene.sensors()[0]
+        scene.integrator().render(scene, sensor)
 
-for name, sensor_to_world in {
-        "default":
-        ScalarTransform4f.look_at(
-            origin=[0, 0, 0],
-            target=[0, 0, 1],
-            up=[0, 1, 0],
-        ),
-        "rotated":
-        ScalarTransform4f.look_at(
-            origin=[0, 0, 0],
-            target=[0, 0, 1],
-            up=[1, 1, 0],
-        ),
-}.items():
-    scene = load_dict(scene_dict(sensor_to_world=sensor_to_world))
-    sensor = scene.sensors()[0]
-    scene.integrator().render(scene, sensor)
+        # Plot recorded leaving radiance
+        img = np.array(sensor.film().bitmap()).squeeze()
+        img -= np.min(img)
+        img = img / np.max(img)
+        plt.imshow(img, origin="lower")
 
-    # Plot recorded leaving radiance
-    img = np.array(sensor.film().bitmap()).squeeze()
-    img -= np.min(img)
-    img = img / np.max(img)
-    plt.imshow(img, origin="lower")
+        # Add illumination setup
+        from mitsuba.core.warp import uniform_hemisphere_to_square
 
-    # Add illumination setup
-    from mitsuba.core.warp import uniform_hemisphere_to_square
+        # -- We must convert emitter directions to the surface scattering frame
+        def direction_to_pixel_coords(direction):
+            d = -np.array(sensor_to_world.inverse().transform_vector(direction))
+            d = d / np.linalg.norm(d)
+            return uniform_hemisphere_to_square(d) * float(film_resolution)
 
-    # -- We must convert emitter directions to the surface scattering frame
-    def direction_to_pixel_coords(direction):
-        d = -np.array(sensor_to_world.inverse().transform_vector(direction))
-        d = d / np.linalg.norm(d)
-        return uniform_hemisphere_to_square(d) * float(film_resolution)
+        plt.scatter(*direction_to_pixel_coords(direction_r), color="r")
+        plt.scatter(*direction_to_pixel_coords(direction_g), color="g")
+        plt.scatter(*direction_to_pixel_coords(direction_b), color="b")
 
-    plt.scatter(*direction_to_pixel_coords(direction_r), color="r")
-    plt.scatter(*direction_to_pixel_coords(direction_g), color="g")
-    plt.scatter(*direction_to_pixel_coords(direction_b), color="b")
+        # -- Add up and target directions to film view
+        center = np.array([
+            0.5 * float(film_resolution),
+            0.5 * float(film_resolution),
+        ])
+        up = 0.75 * np.array([0.0, 0.5 * float(film_resolution)])
+        orange = (1, 0.4, 0)
+        plt.arrow(
+            *center,
+            *up,
+            width=0.3,
+            head_width=1,
+            color=orange,
+        )
+        plt.scatter(*center, color=orange)
+        plt.scatter(*center, color="none", s=250, edgecolors=orange)
 
-    # -- Add up and target directions to film view
-    center = np.array([
-        0.5 * float(film_resolution),
-        0.5 * float(film_resolution),
-    ])
-    up = 0.75 * np.array([0.0, 0.5 * float(film_resolution)])
-    orange = (1, 0.4, 0)
-    plt.arrow(
-        *center,
-        *up,
-        width=0.3,
-        head_width=1,
-        color=orange,
-    )
-    plt.scatter(*center, color=orange)
-    plt.scatter(*center, color="none", s=250, edgecolors=orange)
+        # Add axis labels
+        plt.xlabel("pixel index")
+        plt.ylabel("pixel index")
 
-    # Add axis labels
-    plt.xlabel("pixel index")
-    plt.ylabel("pixel index")
+        plt.savefig(f"sensor_hdistant_{name}.svg")
+        plt.close()
 
-    plt.savefig(f"sensor_hdistant_{name}.svg")
-    plt.close()
+
+def optimize_svg():
+    """
+    Optimize SVG figures.
+
+    Requires:
+
+    - Minion Pro fonts
+    - Inkscape [https://inkscape.org]
+    - scour [https://github.com/scour-project/scour]
+    """
+    prefixes = [
+        # "sensor_hdistant_default",
+        # "sensor_hdistant_rotated",
+        "sensor_hdistant_film_default",
+        "sensor_hdistant_film_rotated",
+        "sensor_hdistant_illumination",
+    ]
+
+    for prefix in prefixes:
+        filename_svg = prefix + ".svg"
+
+        # Convert fonts to paths
+        filename_paths = prefix + "_paths.svg"
+        cmd = [
+            "inkscape", 
+            "--export-type=svg", 
+            f"--export-filename={filename_paths}", 
+            "--export-text-to-path",
+            f"{prefix}.svg"
+        ]
+        print(" ".join(cmd))
+        subprocess.run(cmd)
+
+        # Optimize SVG code
+        filename_optimized = prefix + "_optimized.svg"
+        cmd = ["scour", "-i", filename_paths, "-o", filename_optimized]
+        print(" ".join(cmd))
+        subprocess.run(cmd)
+
+        # Cleanup
+        os.remove(filename_paths)
+
+
+
+if __name__ == "__main__":
+    make_film_plots()
+    optimize_svg()
